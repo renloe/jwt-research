@@ -1,0 +1,273 @@
+dotnet commands
+==================================================================
+dotnet --info
+* Gets installed .net runtimes
+
+dotnet tool list -g
+* Lists dotnet tools
+
+dotnet build
+* Builds project
+
+
+Create DatingApp Solution file
+==================================================================
+PS D:\__BobbyLearning\angular\DatingApp> dotnet new sln
+* Creates a solution file with the current folder name - DatingApp
+
+
+Create DatingApp API Project
+==================================================================
+PS D:\__BobbyLearning\angular\DatingApp> dotnet new webapi -n API
+* Creates a project named API
+
+
+Add API Project Project to Solution
+==================================================================
+PS D:\__BobbyLearning\angular\DatingApp> dotnet sln add .\API\
+Project `API\API.csproj` added to the solution.
+
+
+List projects in solution
+==================================================================
+PS D:\__BobbyLearning\angular\DatingApp> dotnet sln list
+Project(s)
+----------
+API\API.csproj
+
+
+VS Code Extensions
+==================================================================
+C# Dev Kit
+* This also installs C#, C# Dev Kit, and IntelliCode for C# Dev Kit
+* May need  to right click on extension and set to Pre-Release Version if there are issues with the extension.
+
+Material Icon Theme
+* Material icons for VS Code. It adds nice looking icons for files and folders of various types.
+
+NuGet Gallery
+* NuGet Gallery Extension makes installing and uninstalling NuGet packages easier.
+
+Sqlite
+* Explore and query SQLite databases
+* To open: ctrl-shift-p: SQLite: Open Database
+** Select Database
+** Browse with "SQLITE EXPLORER" in the files panel
+
+Angular Language Service
+* Editor services for Angular templates
+
+
+VS Code Settings
+==================================================================
+Settings: 						File >> Preferences >> Settings
+Bracket Pair Colorization: 		Enabled
+Guides: Bracket Pairs:			True
+Auto Closing Brackets:			Always
+Auto Closing Quotes:			Always
+
+
+
+VS Code Commands - Shortcuts
+==================================================================
+Reload:	       		ctrl-shift-p: Developer: Reload Window
+Search Files:		ctrl-p: Search files by name
+Format:				alt-shift-f 
+Keyboard Shorcuts: 	ctrl-k,s
+
+
+Starting the API Project
+==================================================================
+PS D:\__BobbyLearning\angular\DatingApp\API> dotnet run
+
+* To start with hot reloading:
+PS D:\__BobbyLearning\angular\DatingApp\API> dotnet watch
+
+
+Cleanup launchsettings.json file
+File should only contain the following code
+==================================================================
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5000;https://localhost:5001",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+
+
+Trust and Clean Certificates for https
+==================================================================
+D:\__BobbyLearning\angular\DatingApp> dotnet dev-certs https --trust
+D:\__BobbyLearning\angular\DatingApp> dotnet dev-certs https --clean
+
+
+appsettings.Development.json - Set Default Log Level to "Information"
+==================================================================
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Information"
+    }
+  }
+}
+
+
+Program.cs - Remove Swagger for this project
+==================================================================
+Final File Contents:
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+
+var app = builder.Build();
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+
+
+API.csproj - Remove Swagger and disable Nullable
+==================================================================
+Final File Contents:
+
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
+
+
+NuGet config file creation
+==================================================================
+PS D:\__BobbyLearning\angular\DatingApp> dotnet new nugetconfig
+
+
+NuGet Packages
+==================================================================
+Microsoft.EntityFrameworkCore by Microsoft
+* Install in API.csproj - Version must match dotnet version - 7 in this example.
+
+Microsoft.EntityFrameworkCore.Design by Microsoft
+* Install in API.csproj - Version must match dotnet version - 7 in this example.
+
+Microsoft.EntityFrameworkCore.Sqlite
+* Install in API.csproj - Version must match dotnet version - 7 in this example.
+
+
+Install dotnet-ef
+==================================================================
+https://www.nuget.org/packages/dotnet-ef/
+
+Install dotnet-ef
+dotnet tool install --global dotnet-ef --version 7.0.13
+* Install in API.csproj - Version must match dotnet version - 7 in this example.
+
+Update dotnet-ef
+dotnet tool update --global dotnet-ef --version 7.0.13
+
+
+Create Initial EF Migration
+==================================================================
+PS D:\__BobbyLearning\angular\DatingApp\API> dotnet ef migrations add InitialCreate -o Data/Migrations
+
+
+Create Database
+==================================================================
+PS D:\__BobbyLearning\angular\DatingApp\API> dotnet ef database update
+
+
+.editorconfig file - Create at root of application
+==================================================================
+[*.{cs,vb}]
+dotnet_naming_rule.private_members_with_underscore.symbols  = private_fields
+dotnet_naming_rule.private_members_with_underscore.style    = prefix_underscore
+dotnet_naming_rule.private_members_with_underscore.severity = suggestion
+
+dotnet_naming_symbols.private_fields.applicable_kinds           = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_style.prefix_underscore.capitalization = camel_case
+dotnet_naming_style.prefix_underscore.required_prefix = _
+
+
+git commands
+==================================================================
+Initialize Repository: 				PS D:\__BobbyLearning\angular\DatingApp> git init
+Create dotnet gitignore file: 		PS D:\__BobbyLearning\angular\DatingApp> dotnet new gitignore
+Add appsettings.json to gitignore:	Under source control, right-click file and select "add to gitignore"
+Generate global.json file:			PS D:\__BobbyLearning\angular\DatingApp> dotnet new globaljson
+* This records the current runtime version
+Add files to repository:			PS D:\__BobbyLearning\angular\DatingApp> git add .
+Commit Files to repository:			PS D:\__BobbyLearning\angular\DatingApp> git commit -m "End of section2"
+Rename master to main:				PS D:\__BobbyLearning\angular\DatingApp> git branch -M main
+Add remote origin:					PS D:\__BobbyLearning\angular\DatingApp> git remote add origin https://github.com/renloe/DatingApp.git
+Push to Github:						PS D:\__BobbyLearning\angular\DatingApp> git push -u origin main
+
+
+ng commands
+==================================================================
+Create client project:				PS D:\__BobbyLearning\angular\DatingApp> ng new client
+Start Dev Server:					PS D:\__BobbyLearning\angular\DatingApp\client> ng serve
+* Default Address:					http://localhost:4200/
+
+
+Adding Bootstrap and Font-awesome
+==================================================================
+Bootstrap: 
+https://valor-software.com/ngx-bootstrap/#/
+PS D:\__BobbyLearning\angular\DatingApp\client> ng add ngx-bootstrap
+* Need to restart client after bootstrap install
+
+Font-Awesome:
+PS D:\__BobbyLearning\angular\DatingApp\client> npm install font-awesome
+* Angular.json Section >> projects >> client >> architect >> >> build >> options >> styles 
+add the following: "./node_modules/font-awesome/css/font-awesome.min.css",
+
+
+Adding https to angular client using mkcert
+==================================================================
+https://github.com/FiloSottile/mkcert
+Open command prompt as Administrator: 	C:\Windows\System32> choco install mkcert
+Create ssl directory:					PS D:\__BobbyLearning\angular\DatingApp\client> mkdir ssl
+Install CA Cert:						D:\__BobbyLearning\angular\DatingApp\client\ssl> mkcert -install
+Localhost Cert:							PS D:\__BobbyLearning\angular\DatingApp\client\ssl> mkcert localhost
+Angular.json >> serve section
+* Add the following:
+	 "options": {
+				"ssl": true,
+				"sslCert": "./ssl/localhost.pem",
+				"sslKey": "./ssl/localhost-key.pem"
+			  },
+* Restart Client
+* https://localhost:4200
+* API Program.cs - Update Cors
+	app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+* Restart API
+
+
+
+
+
+
+
+
