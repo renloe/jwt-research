@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
-[Authorize]
 public class UsersController : BaseApiController
 {
   private readonly DataContext _context;
@@ -16,13 +15,13 @@ public class UsersController : BaseApiController
     _context = context;
   }
 
-  // Just an example to show how you can allow access to select methods
   [HttpGet]
   public async Task<ActionResult<IEnumerable>> GetUsers()
   {
     return await _context.Users.ToListAsync();
   }
 
+  [Authorize]
   [HttpGet("{id}")]
   public async Task<ActionResult<AppUser>> GetUser(int id)
   {

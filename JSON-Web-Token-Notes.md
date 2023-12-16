@@ -470,3 +470,107 @@ app.MapControllers();
 
 app.Run();
 ```
+
+---
+
+## Adding User Token Data to the Browser's Local Storage and Account Service Usage
+
+`account.service.ts`
+
+- login() and register() store the user token data in the browser's local storage
+- logout() removes the user token data from browser's local storage
+
+```javascript
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, map } from 'rxjs';
+import { User } from '../_models/user';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AccountService {
+  baseUrl = 'https://localhost:5001/api/';
+  private currentUserSource = new BehaviorSubject<User | null>(null);
+  currentUser$ = this.currentUserSource.asObservable();
+
+  constructor(private http: HttpClient) {}
+
+  login(model: any) {
+    return this.http.post<User>(this.baseUrl + 'account/login', model).pipe(
+      map((response: User) => {
+        const user = response;
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
+          this.setCurrentUser(user);
+        }
+      })
+    );
+  }
+
+  register(model: any) {
+    return this.http.post<User>(this.baseUrl + 'account/register', model).pipe(
+      map((user) => {
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
+          this.setCurrentUser(user);
+        }
+      })
+    );
+  }
+
+  setCurrentUser(user: User) {
+    this.currentUserSource.next(user);
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+    this.currentUserSource.next(null);
+  }
+}
+
+```
+
+`nav.component.ts` using account.service.ts login() and logout()
+
+```javascript
+import { Component, OnInit } from '@angular/core';
+import { AccountService } from '../_services/account.service';
+import { Observable, of } from 'rxjs';
+import { User } from '../_models/user';
+
+@Component({
+  selector: 'app-nav',
+  templateUrl: './nav.component.html',
+  styleUrls: ['./nav.component.css'],
+})
+export class NavComponent implements OnInit {
+  model: any = {};
+
+  constructor(public accountService: AccountService) {}
+
+  ngOnInit(): void {
+  }
+
+  login() {
+    this.accountService.login(this.model).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => console.log(error),
+    });
+  }
+
+  logout() {
+    this.accountService.logout();
+  }
+}
+
+```
+
+`register.component.ts` using account.service.ts register()
+
+```javascript
+`nav.component.ts` using account.service.ts login() and logout()
+
+```
